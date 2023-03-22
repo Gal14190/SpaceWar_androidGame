@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/gameFieldBackground"
+    android:theme="@style/ThemeOverlay.SpaceWar.GameField"
+    tools:context=".GameFieldActivity">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="152dp">
+
+            <ImageView
+                android:id="@+id/neon"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginTop="-230dp"
+                app:srcCompat="@drawable/neon" />
+
+            <LinearLayout
+                android:layout_width="171dp"
+                android:layout_height="81dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/heart_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/heart" />
+
+                <ImageView
+                    android:id="@+id/heart_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/heart" />
+
+                <ImageView
+                    android:id="@+id/heart_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/heart" />
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/obstacles_container"
+            android:layout_width="match_parent"
+            android:layout_height="357dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal" />
+
+        <LinearLayout
+            android:id="@+id/component_layout"
+            style="@style/Widget.Theme.SpaceWar.ButtonBar.Fullscreen"
+            android:layout_width="match_parent"
+            android:layout_height="118dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent"/>
+
+        <LinearLayout
+            android:id="@+id/controller"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/button_move_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/red_arrow" />
+
+            <ImageButton
+                android:id="@+id/button_move_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#00FFFFFF"
+                android:contentDescription="@string/app_name"
+                android:rotation="180"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/red_arrow" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="GameFieldAttrs">
+        <attr name="gameFieldBackground" format="reference"/>
+        <attr name="fullscreenBackgroundColor" format="color" />
+        <attr name="gameFieldTextColor" format="color" />
+        <attr name="spaceShipIcon" format="reference" />
+    </declare-styleable>
+</resources>
