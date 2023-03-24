@@ -1,10 +1,14 @@
 package com.example.spacewar;
 
+import static java.lang.Thread.*;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.Image;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +24,7 @@ public class ObstaclesManage extends GameManage {
     private int drawableSrc;
     private ImageView[] hearsView;
 
-    private ImageView[][] obstaclesImages;
-    private boolean[][] obstaclesState;
+    private ObstacleView[][] obstaclesViews;
 
     ObstaclesManage(Activity _activity, LinearLayout _layout, int _drawableSrc, ImageView[] _hearsView) {
         super(_activity.getApplicationContext());
@@ -32,92 +35,115 @@ public class ObstaclesManage extends GameManage {
         this.activity = _activity;
         this.hearsView = _hearsView;
 
-        obstaclesImages = new ImageView[GameFieldModel.COLUMN_SIZE][GameFieldModel.ROW_SIZE];
-        obstaclesState = new boolean[GameFieldModel.COLUMN_SIZE][GameFieldModel.ROW_SIZE];
+        this.obstaclesViews = new ObstacleView[GameFieldModel.COLUMN_SIZE][GameFieldModel.ROW_SIZE + 1];
+        for(int i = 0; i < obstaclesViews.length; i++)
+            for(int j = 0; j < obstaclesViews[0].length; j++)
+                obstaclesViews[i][j] = new ObstacleView();
     }
 
     public void setupObstacles() {
-        for(int i = 0; i < obstaclesImages.length; i++){
-            LinearLayout obs_layout = new LinearLayout(context);
-            obs_layout.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
-            params.weight = 1;
-            params.gravity = Gravity.CENTER;
-            obs_layout.setLayoutParams(params);
+        for(int i = 0; i < GameFieldModel.COLUMN_SIZE; i++){
+            // set columns layout
+            LinearLayout obs_layout = setObstaclesLayout();
 
-            for(int j = 0; j < obstaclesImages[0].length; j++) {
-                ImageView obs = new ImageView(context);
-                obs.setImageResource(drawableSrc);
-                obs.setLayoutParams(new ViewGroup.LayoutParams(convertPixelsToDp(GameFieldModel.OBSTACLE_SIZE), convertPixelsToDp(GameFieldModel.OBSTACLE_SIZE)));
-
+            // create and inset obstacles views into the column layout
+            for(int j = 0; j < GameFieldModel.ROW_SIZE; j++) {
+                ImageView obs = setObstacleView();
                 obs_layout.addView(obs);
-                obstaclesImages[i][j] = obs;
+
+                obstaclesViews[i][j].view = obs; // keep the obstacle view
             }
 
-            this.layout.addView(obs_layout);
+            this.layout.addView(obs_layout); // add the layout into the main layout
         }
 
-        resetStates();
-        review();
+        resetStates(); // invisible the obstacles
+        review(); // display obstacles by it's states
     }
 
     public void run() {
+        // start the game thread
         flag_play = true;
         while (flag_play)
         {
+            // update display views
             this.activity.runOnUiThread(()-> {
                 this.review();
                 this.checkHit();
             });
 
-            try {
-                Thread.sleep(GameFieldModel.REFRESH_RATE);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            nextState();     // update obstacle next states
+
+            // rand a position of obstacle
+            int pos = rand(0, GameFieldModel.COLUMN_SIZE + 1);   // 3/5 rate for display obstacles
+            // set a state for a valid position
+            if(pos < obstaclesViews.length) {
+                obstaclesViews[pos][0].state = true;
             }
 
-            next();
-            resetFirstStates();
-            if(rand(0, 1) == 0) continue; // rotation without obstacles
-
-            int pos = rand(0, obstaclesState.length - 1);
-            obstaclesState[pos][0] = true;
+            delay();    // cycle delay
         }
     }
 
+    private LinearLayout setObstaclesLayout() {
+        // create a vertical linearLayout dived equal screen by weight and centralize thar context
+        LinearLayout linearLayout = new LinearLayout(context);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
+        params.weight = 1;
+        params.gravity = Gravity.CENTER;
+        linearLayout.setLayoutParams(params);
+
+        return linearLayout;
+    }
+
+    private ImageView setObstacleView() {
+        // create a imageView for obstacle
+        ImageView view = new ImageView(context);
+        view.setImageResource(drawableSrc);
+        view.setLayoutParams(new ViewGroup.LayoutParams(convertPixelsToDp(GameFieldModel.OBSTACLE_SIZE)
+                                                        ,convertPixelsToDp(GameFieldModel.OBSTACLE_SIZE)));
+
+        return view;
+    }
+
     private void resetFirstStates() {
-        for(int i = 0; i < obstaclesState.length; i++)
-            obstaclesState[i][0] = false;
+        // reset the first row states (index 0)
+        for(int i = 0; i < GameFieldModel.COLUMN_SIZE; i++)
+            obstaclesViews[i][0].state = false;
     }
 
     private void resetStates() {
-        for(int i = 0; i < obstaclesState.length; i++)
-            for(int j = 0; j < obstaclesState[0].length; j++)
-                obstaclesState[i][j] = false;
+        // reset the all states
+        for(int i = 0; i < GameFieldModel.COLUMN_SIZE; i++)
+            for(int j = 0; j < obstaclesViews[0].length; j++)
+                obstaclesViews[i][j].state = false;
     }
 
-    private void next() {
-        for(int i = obstaclesState.length - 1; i >= 0; i--)
-            for(int j = obstaclesState[0].length - 1; j > 0; j--)
-                obstaclesState[i][j] = obstaclesState[i][j - 1];
+    private void nextState() {
+        // move forward the states, from bottom to up
+        for(int i = GameFieldModel.COLUMN_SIZE - 1; i >= 0; i--)
+            for(int j = obstaclesViews[0].length - 1; j > 0; j--)
+                obstaclesViews[i][j].state = obstaclesViews[i][j - 1].state;
+
+        resetFirstStates(); // reset the first states (index 0) for set a new random state
     }
 
     @Override
     protected void review() {
-        for(int i = 0; i < obstaclesState.length; i++)
-            for(int j = 0; j < obstaclesState[0].length; j++)
-            {
-                if(obstaclesState[i][j])
-                    obstaclesImages[i][j].setVisibility(View.VISIBLE);
-                else
-                    obstaclesImages[i][j].setVisibility(View.INVISIBLE);
-            }
+        // display the obstacles views by is state
+        for(int i = 0; i < GameFieldModel.COLUMN_SIZE; i++)
+            for(int j = 0; j < GameFieldModel.ROW_SIZE; j++)
+                obstaclesViews[i][j].view.setVisibility(obstaclesViews[i][j].state ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void checkHit() {
-        if(obstaclesState[GameFieldModel.componentPosition][obstaclesState[0].length - 1]) {
+        // check if the current component (spaceship) position is in with obstacle position
+        // decrease live counter and invisible heart icon
+        if(obstaclesViews[GameFieldModel.componentPosition][GameFieldModel.ROW_SIZE].state) {
             hearsView[--GameFieldModel.lives].setVisibility(View.INVISIBLE);
 
+            // stop the game and start the finish activity if the lives counter is 0
             if(GameFieldModel.lives <= 0) {
                 flag_play = false;
 
@@ -129,4 +155,9 @@ public class ObstaclesManage extends GameManage {
         }
 
     }
+}
+
+class ObstacleView {
+    public ImageView view;
+    public boolean state;
 }

@@ -28,31 +28,31 @@ public class GameFieldActivity extends AppCompatActivity {
 
     private LinearLayout componentLayout;
     private LinearLayout obstacleLayout;
-    private final int COMPONENT_SRC = R.drawable.spaceship;
-    private final int OBSTACLE_SRC = R.drawable.fireball;
+
 
     private ImageView[] hearts;
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gamefield_activity);
 
-        initViews();
-        GameFieldModel.lives = 3;
+        initViews();    // init all views ids
+        GameFieldModel.lives = 3;   // reset lives
 
         // Neon Animation rotation
         NeonAnimation neonAnimation = new NeonAnimation(neon);
         neonAnimation.start();
 
-        ComponentManage components = new ComponentManage(this, componentLayout, COMPONENT_SRC);
-        components.setupComponents();
+        // init spaceship component and move buttons
+        ComponentManage components = new ComponentManage(this, componentLayout, GameFieldModel.COMPONENT_SRC);
+        components.setupComponents(); // setup components views
         components.setupEvents(rightBtn, leftBtn);
 
-        ObstaclesManage obstacles = new ObstaclesManage(this, obstacleLayout, OBSTACLE_SRC, hearts);
-        obstacles.setupObstacles();
-        obstacles.start();
+        // init obstacles
+        ObstaclesManage obstacles = new ObstaclesManage(this, obstacleLayout, GameFieldModel.OBSTACLE_SRC, hearts);
+        obstacles.setupObstacles(); // setup obstacles views
+        obstacles.start(); // start the game thread
     }
 
     @Override

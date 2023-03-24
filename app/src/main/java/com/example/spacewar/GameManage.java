@@ -12,23 +12,47 @@ public abstract class GameManage extends Thread {
         this.context = _context;
     }
 
-    protected int convertPixelsToDp(float px){
+    /**
+     * Convert px to dp using screen density
+     * @param px
+     * @return
+     */
+    protected int convertPixelsToDp(float px) {
         return (int) px / ((int) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
+    /**
+     * Randomize number for set obstacle position
+     * @param a
+     * @param b
+     * @return
+     */
     protected int rand(int a, int b) {
         Random random = new Random();
         return random.nextInt(b + 1) + a;
     }
 
-    protected boolean isHit(int position) {
-        return position == GameFieldModel.componentPosition;
+    /**
+     * Delay thread for cycle rate
+     */
+    protected void delay() {
+        try {
+            sleep(GameFieldModel.CYCLE_DELAY);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Using run thread method
+     */
     @Override
     public void run() {
         super.run();
     }
 
+    /**
+     * Refresh view
+     */
     protected abstract void review();
 }

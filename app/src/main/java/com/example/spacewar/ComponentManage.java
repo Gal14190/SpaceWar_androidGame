@@ -26,8 +26,7 @@ public class ComponentManage extends GameManage{
     private LinearLayout layout;
     private int drawableSrc;
 
-    private ImageView[] componentsImages;
-    private boolean[] componentsState;
+    private ComponentView[] componentView;
 
     ComponentManage(Context _context, LinearLayout _layout, int _drawableSrc) {
         super(_context);
@@ -36,51 +35,68 @@ public class ComponentManage extends GameManage{
         this.layout = _layout;
         this.context = _context;
 
-        componentsImages = new ImageView[GameFieldModel.COLUMN_SIZE];
-        componentsState = new boolean[GameFieldModel.COLUMN_SIZE];
+        componentView = new ComponentView[GameFieldModel.COLUMN_SIZE];
+        for(int i = 0; i < componentView.length; i++)
+            componentView[i] = new ComponentView();
+
     }
 
     public void setupComponents() {
-        for(int i = 0; i < componentsImages.length; i++) {
-            ImageView component = new ImageView(context);
-            component.setImageResource(drawableSrc);
-            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(convertPixelsToDp(450), ViewGroup.LayoutParams.MATCH_PARENT);
-            params.gravity = Gravity.CENTER;
-            component.setLayoutParams(params);
-
+        // create component view
+        for(int i = 0; i < componentView.length; i++) {
+            ImageView component = setComponentView();
             layout.addView(component);
-            componentsImages[i] = component;
+            componentView[i].view = component;
         }
 
+        // set center position component and display it
         resetState();
-        GameFieldModel.componentPosition = componentsState.length / 2;
-        componentsState[GameFieldModel.componentPosition] = true;
+        GameFieldModel.componentPosition = componentView.length / 2;
+        componentView[GameFieldModel.componentPosition].state = true;
         review();
     }
 
+    private ImageView setComponentView() {
+        // create a view component
+        ImageView view = new ImageView(context);
+        view.setImageResource(drawableSrc);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, convertPixelsToDp(GameFieldModel.COMPONENT_SIZE));
+        params.gravity = Gravity.CENTER;
+        params.weight = 1;
+        view.setLayoutParams(params);
+
+        return view;
+    }
+
     private void resetState() {
-        Arrays.fill(componentsState, false);
+        // reset component state
+        for(int i = 0; i < componentView.length; i++)
+            componentView[i].state = false;
     }
 
     public void setupEvents(View rightBtn, View leftBtn) {
+        // create onClick listener for the right button controller
         rightBtn.setOnClickListener(view -> {
+            // check if the new component position is valid and update the view
             int newPos = GameFieldModel.componentPosition + 1;
-            if(newPos < componentsState.length) {
+            if(newPos < componentView.length) {
                 GameFieldModel.componentPosition = newPos;
 
                 resetState();
-                componentsState[GameFieldModel.componentPosition] = true;
+                componentView[GameFieldModel.componentPosition].state = true;
                 review();
             }
         });
 
+        // create onClick listener for the left button controller
         leftBtn.setOnClickListener(view -> {
+            // check if the new component position is valid and update the view
             int newPos = GameFieldModel.componentPosition - 1;
             if(newPos >= 0) {
                 GameFieldModel.componentPosition = newPos;
 
                 resetState();
-                componentsState[GameFieldModel.componentPosition] = true;
+                componentView[GameFieldModel.componentPosition].state = true;
                 review();
             }
         });
@@ -88,12 +104,13 @@ public class ComponentManage extends GameManage{
 
     @Override
     protected void review() {
-        for(int i = 0; i < componentsState.length; i++) {
-            if (componentsState[i]) {
-                componentsImages[i].setVisibility(View.VISIBLE);
-            } else {
-                componentsImages[i].setVisibility(View.INVISIBLE);
-            }
+        for(int i = 0; i < componentView.length; i++) {
+            componentView[i].view.setVisibility(componentView[i].state? View.VISIBLE : View.INVISIBLE);
         }
     }
+}
+
+class ComponentView {
+    public ImageView view;
+    public boolean state;
 }
