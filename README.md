@@ -10,6 +10,7 @@
 ## Image preview
 
 ![image](https://user-images.githubusercontent.com/32678384/227611701-7cbe85c8-d516-4c19-9e23-47c82af799dd.png)
+![image](https://user-images.githubusercontent.com/32678384/227611927-2805b057-3f04-42e5-ba36-e89f6ed703a5.png)
 
 
 ## Game Play Video
