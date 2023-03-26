@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -14,9 +17,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class ObstaclesManage extends GameManage {
     private boolean flag_play;
+    private Vibrator vibrator;
 
     private Context context;
     private Activity activity;
@@ -142,6 +147,17 @@ public class ObstaclesManage extends GameManage {
         // decrease live counter and invisible heart icon
         if(obstaclesViews[GameFieldModel.componentPosition][GameFieldModel.ROW_SIZE].state) {
             hearsView[--GameFieldModel.lives].setVisibility(View.INVISIBLE);
+
+            Toast.makeText(context, "Hit!", Toast.LENGTH_SHORT).show(); // toast massage
+
+            // vibrate 500ms
+            vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                //deprecated in API 26
+                vibrator.vibrate(500);
+            }
 
             // stop the game and start the finish activity if the lives counter is 0
             if(GameFieldModel.lives <= 0) {
