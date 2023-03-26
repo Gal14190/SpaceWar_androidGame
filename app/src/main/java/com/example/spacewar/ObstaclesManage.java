@@ -40,7 +40,7 @@ public class ObstaclesManage extends GameManage {
         this.activity = _activity;
         this.hearsView = _hearsView;
 
-        this.obstaclesViews = new ObstacleView[GameFieldModel.COLUMN_SIZE][GameFieldModel.ROW_SIZE + 1];
+        this.obstaclesViews = new ObstacleView[GameFieldModel.COLUMN_SIZE][GameFieldModel.ROW_SIZE];
         for(int i = 0; i < obstaclesViews.length; i++)
             for(int j = 0; j < obstaclesViews[0].length; j++)
                 obstaclesViews[i][j] = new ObstacleView();
@@ -145,7 +145,7 @@ public class ObstaclesManage extends GameManage {
     private void checkHit() {
         // check if the current component (spaceship) position is in with obstacle position
         // decrease live counter and invisible heart icon
-        if(obstaclesViews[GameFieldModel.componentPosition][GameFieldModel.ROW_SIZE].state) {
+        if(obstaclesViews[GameFieldModel.componentPosition][GameFieldModel.ROW_SIZE-1].state) {
             hearsView[--GameFieldModel.lives].setVisibility(View.INVISIBLE);
 
             Toast.makeText(context, "Hit!", Toast.LENGTH_SHORT).show(); // toast massage
