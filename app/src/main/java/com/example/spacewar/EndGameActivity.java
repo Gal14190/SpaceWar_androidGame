@@ -2,6 +2,7 @@ package com.example.spacewar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -22,8 +23,13 @@ public class EndGameActivity extends AppCompatActivity {
             actionBar.hide();
         }
 
+        // set score
+        Intent intentGetScore = getIntent();
+        int score = intentGetScore.getIntExtra("scoreCounter", -1);
+        ((TextView) findViewById(R.id.scoreCounter)).setText(Integer.toString(score));
+
         // display the game field on text click event
-        ((TextView) findViewById(R.id.finish_textview)).setOnClickListener(v->{
+        ((Button) findViewById(R.id.backBtn)).setOnClickListener(v->{
             Intent intent = new Intent(this, GameFieldActivity.class);
             startActivity(intent);
             finish();

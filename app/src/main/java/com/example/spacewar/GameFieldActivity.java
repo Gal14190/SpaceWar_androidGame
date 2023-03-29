@@ -14,6 +14,7 @@ import android.view.WindowInsets;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -29,7 +30,7 @@ public class GameFieldActivity extends AppCompatActivity {
     private LinearLayout componentLayout;
     private LinearLayout obstacleLayout;
 
-
+    private TextView scoreTextView;
     private ImageView[] hearts;
 
     @Override
@@ -50,7 +51,12 @@ public class GameFieldActivity extends AppCompatActivity {
         components.setupEvents(rightBtn, leftBtn);
 
         // init obstacles
-        ObstaclesManage obstacles = new ObstaclesManage(this, obstacleLayout, GameFieldModel.OBSTACLE_SRC, hearts);
+        ObstaclesManage obstacles = new ObstaclesManage(this
+                , obstacleLayout
+                , GameFieldModel.OBSTACLE_SRC
+                , GameFieldModel.COIN_SRC
+                , hearts
+                ,scoreTextView);
         obstacles.setupObstacles(); // setup obstacles views
         obstacles.start(); // start the game thread
     }
@@ -74,6 +80,8 @@ public class GameFieldActivity extends AppCompatActivity {
         hearts[0] = (ImageView) findViewById(R.id.heart_0);
         hearts[1] = (ImageView) findViewById(R.id.heart_1);
         hearts[2] = (ImageView) findViewById(R.id.heart_2);
+
+        scoreTextView = (TextView) findViewById(R.id.scoreCounter);
     }
 
     private void fullScreen() {

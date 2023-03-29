@@ -17,28 +17,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ObstaclesManage extends GameManage {
     private boolean flag_play;
+    private int counter;
     private Vibrator vibrator;
 
     private Context context;
     private Activity activity;
     private LinearLayout layout;
-    private int drawableSrc;
+    private int drawableObstacleSrc;
+    private int drawableCoinSrc;
     private ImageView[] hearsView;
+    private TextView scoreTextView;
 
     private ObstacleView[][] obstaclesViews;
 
-    ObstaclesManage(Activity _activity, LinearLayout _layout, int _drawableSrc, ImageView[] _hearsView) {
+    ObstaclesManage(Activity _activity, LinearLayout _layout, int _drawableObstacleSrc, int _drawableCoinSrc, ImageView[] _hearsView, TextView _scoreTextView) {
         super(_activity.getApplicationContext());
+        this.counter = 0;
 
-        this.drawableSrc = _drawableSrc;
+        this.drawableObstacleSrc = _drawableObstacleSrc;
+        this.drawableCoinSrc = _drawableCoinSrc;
         this.layout = _layout;
         this.context = _activity.getApplicationContext();
         this.activity = _activity;
         this.hearsView = _hearsView;
+        this.scoreTextView = _scoreTextView;
 
         this.obstaclesViews = new ObstacleView[GameFieldModel.COLUMN_SIZE][GameFieldModel.ROW_SIZE];
         for(int i = 0; i < obstaclesViews.length; i++)
@@ -81,11 +88,14 @@ public class ObstaclesManage extends GameManage {
 
             // rand a position of obstacle
             int pos = rand(0, GameFieldModel.COLUMN_SIZE + 1);   // 3/5 rate for display obstacles
+            boolean coin = rand(0, 10) > 9; // 1/10 rate for coin
             // set a state for a valid position
             if(pos < obstaclesViews.length) {
                 obstaclesViews[pos][0].state = true;
+                obstaclesViews[pos][0].coin = coin;
             }
 
+            this.counter += GameFieldModel.ROAD_BONUS;
             delay();    // cycle delay
         }
     }
@@ -105,7 +115,7 @@ public class ObstaclesManage extends GameManage {
     private ImageView setObstacleView() {
         // create a imageView for obstacle
         ImageView view = new ImageView(context);
-        view.setImageResource(drawableSrc);
+        view.setImageResource(drawableObstacleSrc);
         view.setLayoutParams(new ViewGroup.LayoutParams(convertPixelsToDp(GameFieldModel.OBSTACLE_SIZE)
                                                         ,convertPixelsToDp(GameFieldModel.OBSTACLE_SIZE)));
 
@@ -128,8 +138,10 @@ public class ObstaclesManage extends GameManage {
     private void nextState() {
         // move forward the states, from bottom to up
         for(int i = GameFieldModel.COLUMN_SIZE - 1; i >= 0; i--)
-            for(int j = obstaclesViews[0].length - 1; j > 0; j--)
+            for(int j = obstaclesViews[0].length - 1; j > 0; j--) {
                 obstaclesViews[i][j].state = obstaclesViews[i][j - 1].state;
+                obstaclesViews[i][j].coin = obstaclesViews[i][j - 1].coin;
+            }
 
         resetFirstStates(); // reset the first states (index 0) for set a new random state
     }
@@ -138,36 +150,45 @@ public class ObstaclesManage extends GameManage {
     protected void review() {
         // display the obstacles views by is state
         for(int i = 0; i < GameFieldModel.COLUMN_SIZE; i++)
-            for(int j = 0; j < GameFieldModel.ROW_SIZE; j++)
+            for(int j = 0; j < GameFieldModel.ROW_SIZE; j++) {
                 obstaclesViews[i][j].view.setVisibility(obstaclesViews[i][j].state ? View.VISIBLE : View.INVISIBLE);
+                obstaclesViews[i][j].view.setImageResource(obstaclesViews[i][j].coin ? drawableCoinSrc : drawableObstacleSrc);
+            }
+
+        this.scoreTextView.setText(Integer.toString(counter));
     }
 
     private void checkHit() {
         // check if the current component (spaceship) position is in with obstacle position
         // decrease live counter and invisible heart icon
         if(obstaclesViews[GameFieldModel.componentPosition][GameFieldModel.ROW_SIZE-1].state) {
-            hearsView[--GameFieldModel.lives].setVisibility(View.INVISIBLE);
+            if(obstaclesViews[GameFieldModel.componentPosition][GameFieldModel.ROW_SIZE-1].coin) { // coin hit
+                Toast.makeText(context, "+" + GameFieldModel.COIN_BONUS, Toast.LENGTH_SHORT).show(); // toast massage
+                counter += GameFieldModel.COIN_BONUS;
+            } else { // obstacle hit
+                hearsView[--GameFieldModel.lives].setVisibility(View.INVISIBLE);
 
-            Toast.makeText(context, "Hit!", Toast.LENGTH_SHORT).show(); // toast massage
+                Toast.makeText(context, "Hit!", Toast.LENGTH_SHORT).show(); // toast massage
 
-            // vibrate 500ms
-            vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-            } else {
-                //deprecated in API 26
-                vibrator.vibrate(500);
+                // vibrate 500ms
+                vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+                } else {
+                    //deprecated in API 26
+                    vibrator.vibrate(500);
+                }
+
+                // stop the game and start the finish activity if the lives counter is 0
+                if (GameFieldModel.lives <= 0) {
+                    flag_play = false;
+
+                    Intent intent = new Intent(context, EndGameActivity.class);
+                    intent.putExtra("scoreCounter", this.counter);
+                    activity.startActivity(intent);
+                    activity.finish();
+                }
             }
-
-            // stop the game and start the finish activity if the lives counter is 0
-            if(GameFieldModel.lives <= 0) {
-                flag_play = false;
-
-                Intent intent = new Intent(context, EndGameActivity.class);
-                activity.startActivity(intent);
-                activity.finish();
-            }
-
         }
 
     }
@@ -176,4 +197,5 @@ public class ObstaclesManage extends GameManage {
 class ObstacleView {
     public ImageView view;
     public boolean state;
+    public boolean coin; // false: obstacle, true: coin
 }
