@@ -21,6 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SpaceWar"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDFhEliITIgew-3lxDDtoguphvpy3pHn1E" />
         <activity
             android:name=".GameFieldActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -37,6 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".TopActivity"/>
     </application>
 
 </manifest>
