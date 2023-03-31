@@ -1,23 +1,10 @@
 package com.example.spacewar;
 
-import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.media.Image;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import java.util.Arrays;
 
 public class ComponentManage extends GameManage{
     public enum Direction { RIGHT, LEFT };

@@ -1,7 +1,5 @@
 package com.example.spacewar;
 
-import android.annotation.SuppressLint;
-
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,10 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-/**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
- */
 public class GameFieldActivity extends AppCompatActivity {
     private final Handler mHideHandler = new Handler(Looper.myLooper());
     private View mControlsView;

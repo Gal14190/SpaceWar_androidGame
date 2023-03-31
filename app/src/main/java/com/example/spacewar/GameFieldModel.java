@@ -1,5 +1,7 @@
 package com.example.spacewar;
 
+import com.example.spacewar.R;
+
 public class GameFieldModel {
     /**
      * Icons
