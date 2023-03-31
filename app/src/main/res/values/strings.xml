@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Space War</string>
+    <string name="app_name">Spacecraft War Game</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <!-- TODO: Remove or change this placeholder text -->

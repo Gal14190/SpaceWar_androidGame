@@ -30,7 +30,7 @@ public class EndGameActivity extends AppCompatActivity {
 
         // display the game field on text click event
         ((Button) findViewById(R.id.backBtn)).setOnClickListener(v->{
-            Intent intent = new Intent(this, GameFieldActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         });
