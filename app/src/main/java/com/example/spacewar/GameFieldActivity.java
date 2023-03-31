@@ -41,6 +41,18 @@ public class GameFieldActivity extends AppCompatActivity {
         initViews();    // init all views ids
         GameFieldModel.lives = 3;   // reset lives
 
+        // set speed level
+        if(getIntent().getBooleanExtra("level", false))
+            GameFieldModel.cycle_delay = GameFieldModel.CYCLE_DELAY_FAST;
+        else
+            GameFieldModel.cycle_delay = GameFieldModel.CYCLE_DELAY_SLOW;
+
+        // set game mode (buttons or sensors
+        if(GameFieldModel.mode = getIntent().getBooleanExtra("mode", false)) {
+            leftBtn.setVisibility(View.INVISIBLE);
+            rightBtn.setVisibility(View.INVISIBLE);
+        }
+
         // Neon Animation rotation
         NeonAnimation neonAnimation = new NeonAnimation(neon);
         neonAnimation.start();

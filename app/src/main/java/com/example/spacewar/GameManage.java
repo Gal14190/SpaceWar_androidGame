@@ -37,7 +37,7 @@ public abstract class GameManage extends Thread {
      */
     protected void delay() {
         try {
-            sleep(GameFieldModel.CYCLE_DELAY);
+            sleep(GameFieldModel.cycle_delay);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

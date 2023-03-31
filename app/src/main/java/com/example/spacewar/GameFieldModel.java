@@ -35,7 +35,8 @@ public class GameFieldModel {
      */
 
     // cycle thread review time
-    static final int CYCLE_DELAY = 400;
+    static final int CYCLE_DELAY_SLOW = 400;
+    static final int CYCLE_DELAY_FAST = 150;
 
     /**
      * Holder data
@@ -45,4 +46,9 @@ public class GameFieldModel {
     static int componentPosition = 1;
     // lives counter holder
     static int lives = 3;
+
+    // level
+    static boolean mode = false;
+    static int cycle_delay = CYCLE_DELAY_SLOW;
+
 }
