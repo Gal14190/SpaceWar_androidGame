@@ -41,10 +41,7 @@ public class EndGameActivity extends AppCompatActivity {
         // get location
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, location -> {
-                location.getLatitude();
-                location.getLongitude();
-            });
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, location -> {});
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
             if (location != null) {
@@ -68,6 +65,7 @@ public class EndGameActivity extends AppCompatActivity {
             finish();
         });
 
+        // set game data into the device memory
         DataManage dataManage = new DataManage(this);
         ArrayList<TopGame> topGames = dataManage.getTopGame();
         topGames.add(new TopGame(score, longitude, latitude));

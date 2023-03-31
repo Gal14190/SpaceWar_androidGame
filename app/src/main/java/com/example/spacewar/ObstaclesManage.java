@@ -24,6 +24,7 @@ public class ObstaclesManage extends GameManage {
     private boolean flag_play;
     private int counter;
     private Vibrator vibrator;
+    private SoundEffect soundEffect;
 
     private Context context;
     private Activity activity;
@@ -46,6 +47,8 @@ public class ObstaclesManage extends GameManage {
         this.activity = _activity;
         this.hearsView = _hearsView;
         this.scoreTextView = _scoreTextView;
+
+        soundEffect = new SoundEffect(context, R.raw.sound);
 
         this.obstaclesViews = new ObstacleView[GameFieldModel.COLUMN_SIZE][GameFieldModel.ROW_SIZE];
         for(int i = 0; i < obstaclesViews.length; i++)
@@ -178,6 +181,8 @@ public class ObstaclesManage extends GameManage {
                     //deprecated in API 26
                     vibrator.vibrate(500);
                 }
+
+                soundEffect.play(); // make sound crash
 
                 // stop the game and start the finish activity if the lives counter is 0
                 if (GameFieldModel.lives <= 0) {
