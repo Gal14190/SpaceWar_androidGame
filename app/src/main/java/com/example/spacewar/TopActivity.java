@@ -10,7 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
 public class TopActivity extends AppCompatActivity {
-    private TableLayout scoreTableView;
+    private ScoreTableFragment scoreTableFragment;
+    private MapFragment mapFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -24,13 +25,20 @@ public class TopActivity extends AppCompatActivity {
             finish();
         });
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainerView1, ScoreTableFragment.class, null)
-                .setReorderingAllowed(true)
-                .addToBackStack(null)
-                .commit();
-        ScoreTableFragment fragment = (ScoreTableFragment) fragmentManager.findFragmentById(R.id.fragmentContainerView1);
+        scoreTableFragment = new ScoreTableFragment();
+        mapFragment = new MapFragment();
 
+        CallbackPosition callbackPosition = (v1, v2) -> mapFragment.zoom(v1, v2);
+        scoreTableFragment.setCallbackPosition(callbackPosition);
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragmentContainerView1, scoreTableFragment)
+                .commit();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragmentContainerView2, mapFragment)
+                .commit();
     }
 }

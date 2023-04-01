@@ -32,9 +32,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void zoom(double latitude, double longitude) {
-        LatLng place = new LatLng(latitude, longitude);
-        map.addMarker(new MarkerOptions().position(place));
-        CameraPosition cameraPosition = new CameraPosition.Builder().target(place).zoom(16).build();
+        LatLng locate = new LatLng(latitude, longitude);
+        map.addMarker(new MarkerOptions().position(locate));
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(locate).zoom(12).build();
         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
 

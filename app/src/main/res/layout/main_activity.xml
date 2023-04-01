@@ -70,7 +70,7 @@
             android:layout_weight="1"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:text="LEVEL" />
+            android:text="MODE" />
 
         <Button
             android:id="@+id/arrowModeBtn"

@@ -22,50 +22,19 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ScoreTableFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ScoreTableFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private CallbackPosition callbackPosition;
+    private ArrayList<TopGameView> topGameView;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    public ScoreTableFragment() {}
 
-    public ScoreTableFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ScoreTableFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ScoreTableFragment newInstance(String param1, String param2) {
-        ScoreTableFragment fragment = new ScoreTableFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public void setCallbackPosition(CallbackPosition _callbackPosition) {
+        this.callbackPosition = _callbackPosition;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -78,14 +47,25 @@ public class ScoreTableFragment extends Fragment {
         DataManage dataManage = new DataManage(getActivity().getBaseContext());
         ArrayList<TopGame> topGames = dataManage.getTopGame();
 
+        topGameView = new ArrayList<>();
+        int i = 0;
         for(TopGame topGame : topGames) {
             TableRow row = new TableRow(getContext());
 
             TextView scoreView = new TextView(getContext());
             scoreView.setText(Integer.toString(topGame.getScore()));
+            scoreView.setTransitionName(Integer.toString(i));
             scoreView.setTextColor(Color.BLACK);
-            scoreView.setTextSize(30);
+            scoreView.setTextSize(20);
             scoreView.setGravity(Gravity.CENTER);
+
+            topGameView.add(new TopGameView(topGame, i++));
+            scoreView.setOnClickListener(v ->{
+                int id = (int)Integer.parseInt(v.getTransitionName());
+                TopGame _topGame = findById(id);
+                callbackPosition.position(_topGame.getLat(), _topGame.getLon());
+            });
+
             row.addView(scoreView);
 
             scoreTableView.addView(row);
@@ -94,4 +74,23 @@ public class ScoreTableFragment extends Fragment {
         return view;
     }
 
+    private TopGame findById(int id) {
+        for(TopGameView t : topGameView) {
+            if(t.id == id)
+                return t.topGame;
+        }
+
+        return null;
+    }
+
+}
+
+class TopGameView {
+    public TopGame topGame;
+    public int id;
+
+    public TopGameView(TopGame topGame, int id) {
+        this.topGame = topGame;
+        this.id = id;
+    }
 }
