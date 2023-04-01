@@ -2,15 +2,25 @@ package com.example.spacewar;
 
 public class TopGame {
     private int score;
+    private String time;
     private float lon;
     private float lat;
 
-    public TopGame(int score, float lon, float lat) {
+    public TopGame(int score, String time, float lon, float lat) {
         this.score = score;
         this.lon = lon;
         this.lat = lat;
+        this.time = time;
     }
     public TopGame(){}
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public int getScore() {
         return score;

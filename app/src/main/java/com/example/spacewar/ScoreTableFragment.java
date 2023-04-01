@@ -68,6 +68,11 @@ public class ScoreTableFragment extends Fragment {
 
             row.addView(scoreView);
 
+            TextView timeView = new TextView(getContext());
+            timeView.setText(topGame.getTime());
+            timeView.setTextSize(14);
+            row.addView(timeView);
+
             scoreTableView.addView(row);
         }
 
