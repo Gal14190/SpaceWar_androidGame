@@ -21,7 +21,7 @@ public class DataManage {
     public ArrayList<TopGame> getTopGame() {
         ArrayList<TopGame> topGamesList = new ArrayList<>();
 
-        String dataJson = sharedPreferences.getString("jsonData", null);
+        String dataJson = sharedPreferences.getString("jsonData", null); // get json data from the device memory
         if(dataJson != null) {
             Gson gson = new Gson();
             Type topGameType = new TypeToken<ArrayList<TopGame>>() {}.getType();
@@ -34,15 +34,17 @@ public class DataManage {
         this.sort(topGamesList);
 
         Gson gson = new Gson();
-        String json = gson.toJson(topGamesList);
+        String json = gson.toJson(topGamesList); // set json from the data array list
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("jsonData", json).apply();
+        editor.putString("jsonData", json).apply(); // set the json data into the device memory
     }
 
     private void sort(ArrayList<TopGame> topGamesList) {
+        // sort the array list of data by the score
         Collections.sort(topGamesList, (t1, t2) -> t2.getScore() - t1.getScore());
 
+        // remove the bottoms game that over the limit of max top size
         if(topGamesList.size() > MAX_TOP_SIZE) {
             for(int i = 10; i < topGamesList.size(); i++) {
                 topGamesList.remove(i);
