@@ -17,14 +17,14 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView1"
-        android:name="com.example.spacewar.ScoreTableFragment"
+        android:name="com.example.spacewar.fragments.ScoreTableFragment"
         android:layout_width="match_parent"
         android:layout_weight="2"
         android:layout_height="0dp" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView2"
-        android:name="com.example.spacewar.MapFragment"
+        android:name="com.example.spacewar.fragments.MapFragment"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="0dp" />

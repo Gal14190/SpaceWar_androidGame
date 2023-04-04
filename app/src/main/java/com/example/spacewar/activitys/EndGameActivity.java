@@ -1,4 +1,4 @@
-package com.example.spacewar;
+package com.example.spacewar.activitys;
 
 import android.Manifest;
 import android.content.Context;
@@ -15,6 +15,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+
+import com.example.spacewar.R;
+import com.example.spacewar.models.TopGame;
+import com.example.spacewar.manage.DataManage;
 
 import java.util.ArrayList;
 import java.util.Calendar;

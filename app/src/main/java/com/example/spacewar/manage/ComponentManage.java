@@ -1,10 +1,12 @@
-package com.example.spacewar;
+package com.example.spacewar.manage;
 
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.example.spacewar.models.GameFieldModel;
 
 public class ComponentManage extends GameManage{
     public enum Direction { RIGHT, LEFT };
@@ -15,7 +17,7 @@ public class ComponentManage extends GameManage{
 
     private ComponentView[] componentView;
 
-    ComponentManage(Context _context, LinearLayout _layout, int _drawableSrc) {
+    public ComponentManage(Context _context, LinearLayout _layout, int _drawableSrc) {
         super(_context);
 
         this.drawableSrc = _drawableSrc;

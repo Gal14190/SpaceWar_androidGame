@@ -1,8 +1,9 @@
-package com.example.spacewar;
+package com.example.spacewar.manage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.spacewar.models.TopGame;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

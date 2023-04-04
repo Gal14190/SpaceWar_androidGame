@@ -1,4 +1,4 @@
-package com.example.spacewar;
+package com.example.spacewar.models;
 
 public class TopGame {
     private int score;

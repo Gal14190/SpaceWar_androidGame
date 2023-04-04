@@ -7,7 +7,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:background="@color/teal_700"
-    tools:context=".EndGameActivity">
+    tools:context=".activitys.EndGameActivity">
 
     <TextView
         android:id="@+id/finish_textview"

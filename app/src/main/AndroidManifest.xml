@@ -25,14 +25,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDFhEliITIgew-3lxDDtoguphvpy3pHn1E" />
         <activity
-            android:name=".GameFieldActivity"
+            android:name=".activitys.GameFieldActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.SpaceWar.Fullscreen">
         </activity>
-        <activity android:name=".EndGameActivity"/>
-        <activity android:name=".MainActivity"
+        <activity android:name=".activitys.EndGameActivity"/>
+        <activity android:name=".activitys.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TopActivity"/>
+        <activity android:name=".activitys.TopActivity"/>
     </application>
 
 </manifest>

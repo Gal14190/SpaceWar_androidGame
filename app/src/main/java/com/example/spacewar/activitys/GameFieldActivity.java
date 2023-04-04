@@ -1,4 +1,4 @@
-package com.example.spacewar;
+package com.example.spacewar.activitys;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +13,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.spacewar.models.GameFieldModel;
+import com.example.spacewar.R;
+import com.example.spacewar.effects.NeonAnimation;
+import com.example.spacewar.manage.ComponentManage;
+import com.example.spacewar.manage.ObstaclesManage;
 
 public class GameFieldActivity extends AppCompatActivity {
     private final Handler mHideHandler = new Handler(Looper.myLooper());

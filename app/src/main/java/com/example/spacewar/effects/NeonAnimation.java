@@ -1,11 +1,11 @@
-package com.example.spacewar;
+package com.example.spacewar.effects;
 
 import android.util.Log;
 import android.widget.ImageView;
 
-class NeonAnimation extends Thread {
+public class NeonAnimation extends Thread {
     ImageView obj;
-    NeonAnimation(ImageView _obj) {
+    public NeonAnimation(ImageView _obj) {
         this.obj = _obj;
     }
 

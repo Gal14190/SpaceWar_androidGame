@@ -1,13 +1,16 @@
-package com.example.spacewar;
+package com.example.spacewar.activitys;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ImageButton;
-import android.widget.TableLayout;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
+
+import com.example.spacewar.fragments.MapFragment;
+import com.example.spacewar.R;
+import com.example.spacewar.fragments.ScoreTableFragment;
+import com.example.spacewar.manage.CallbackPosition;
 
 public class TopActivity extends AppCompatActivity {
     private ScoreTableFragment scoreTableFragment;

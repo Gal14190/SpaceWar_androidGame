@@ -1,4 +1,4 @@
-package com.example.spacewar;
+package com.example.spacewar.manage;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.spacewar.activitys.EndGameActivity;
+import com.example.spacewar.models.GameFieldModel;
+import com.example.spacewar.R;
+import com.example.spacewar.effects.*;
 
 public class ObstaclesManage extends GameManage {
     private boolean flag_play;
@@ -30,7 +35,7 @@ public class ObstaclesManage extends GameManage {
 
     private ObstacleView[][] obstaclesViews;
 
-    ObstaclesManage(Activity _activity, LinearLayout _layout, int _drawableObstacleSrc, int _drawableCoinSrc, ImageView[] _hearsView, TextView _scoreTextView) {
+    public ObstaclesManage(Activity _activity, LinearLayout _layout, int _drawableObstacleSrc, int _drawableCoinSrc, ImageView[] _hearsView, TextView _scoreTextView) {
         super(_activity.getApplicationContext());
         this.counter = 0;
 

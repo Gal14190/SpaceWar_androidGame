@@ -1,4 +1,4 @@
-package com.example.spacewar;
+package com.example.spacewar.activitys;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,6 +8,8 @@ import android.widget.Button;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.spacewar.R;
 
 public class MainActivity extends AppCompatActivity {
     private Button[] levelButtons;

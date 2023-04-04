@@ -1,7 +1,9 @@
-package com.example.spacewar;
+package com.example.spacewar.manage;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+
+import com.example.spacewar.models.GameFieldModel;
 
 import java.util.Random;
 

@@ -1,10 +1,10 @@
-package com.example.spacewar;
+package com.example.spacewar.effects;
 
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.SoundPool;
 
-class SoundEffect {
+public class SoundEffect {
     private SoundPool soundPool;
     private int soundID;
 
