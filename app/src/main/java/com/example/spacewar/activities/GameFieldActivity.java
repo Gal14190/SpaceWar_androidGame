@@ -41,6 +41,10 @@ public class GameFieldActivity extends AppCompatActivity {
         initViews();    // init all views ids
         GameFieldModel.lives = 3;   // reset lives
 
+        // Neon Animation rotation
+        NeonAnimation neonAnimation = new NeonAnimation(neon);
+        neonAnimation.start();
+
         // set speed level
         if(getIntent().getBooleanExtra("level", false))
             GameFieldModel.cycle_delay = GameFieldModel.CYCLE_DELAY_FAST;
@@ -51,12 +55,10 @@ public class GameFieldActivity extends AppCompatActivity {
         GameFieldModel.eMode mode = getIntent().getBooleanExtra("mode", false)? GameFieldModel.eMode.SENSORS
                                                                                                 :GameFieldModel.eMode.ARROWS;
 
-        // Neon Animation rotation
-        NeonAnimation neonAnimation = new NeonAnimation(neon);
-        neonAnimation.start();
-
         // init spaceship component and move buttons
-        ComponentManage components = new ComponentManage(this, componentLayout, GameFieldModel.COMPONENT_SRC);
+        ComponentManage components = new ComponentManage(this
+                , componentLayout
+                , GameFieldModel.COMPONENT_SRC);
         components.setupComponents(); // setup components views
         components.setupEvents(rightBtn, leftBtn, mode);
 

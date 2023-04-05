@@ -22,11 +22,10 @@ public class TiltManage implements SensorEventListener {
     private final float DELTA_Y = 5;
 
     public TiltManage(Context context) {
-        x_value = y_value = 0;
+        x_value = y_value = 0; // reset first values
 
+        // start sensors services
         sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
-        magneticSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-        sensorManager.registerListener(this, magneticSensor, SensorManager.SENSOR_DELAY_NORMAL);
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_NORMAL);
     }
 
@@ -37,6 +36,7 @@ public class TiltManage implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         if (sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            // get sensor values
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
             float z = sensorEvent.values[2];
@@ -62,26 +62,11 @@ public class TiltManage implements SensorEventListener {
                 callbackComponent.speedSlower();
             }
         }
-
-
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
-
-    private float calculateTiltRoll(float pitch, float dir) {
-        float pitch_abs = Math.abs(pitch);
-        return (float) Math.toDegrees(pitch_abs) * ((float) Math.toDegrees(dir) < 0 ? -1 : 1);
-
-       // return pitch_abs;
-    }
-
-    private float calculateTiltPitch(float x, float y, float z) {
-        double radians = Math.atan2(y, Math.sqrt(x * x + z * z));
-        return (float) Math.toDegrees(radians);
-    }
-
 }
 
