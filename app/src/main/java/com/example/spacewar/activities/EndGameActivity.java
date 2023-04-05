@@ -1,4 +1,4 @@
-package com.example.spacewar.activitys;
+package com.example.spacewar.activities;
 
 import android.Manifest;
 import android.content.Context;
@@ -37,23 +37,8 @@ public class EndGameActivity extends AppCompatActivity {
             actionBar.hide();
         }
 
-        float latitude = 0.0F;
-        float longitude = 0.0F;
-
         // get location
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, location -> {});
-            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-            if (location != null) {
-                latitude = (float)location.getLatitude();
-                longitude = (float)location.getLongitude();
-            }
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
-        }
-
+        Locate locate = getGpsLocation();
 
         // get score
         Intent intentGetScore = getIntent();
@@ -67,16 +52,40 @@ public class EndGameActivity extends AppCompatActivity {
             finish();
         });
 
-        // get local time
-        Calendar calendar = Calendar.getInstance();
-        String time = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND)
-                + " " + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR);
-
         // set game data into the device memory
         DataManage dataManage = new DataManage(this);
         ArrayList<TopGame> topGames = dataManage.getTopGame();
-        topGames.add(new TopGame(score, time, longitude, latitude));
+        topGames.add(new TopGame(score, getDeviceTimeStr(), locate.longitude, locate.latitude));
         dataManage.setTopGame(topGames);
+    }
+
+    private Locate getGpsLocation() {
+        Locate locate = new Locate();
+
+        // check for GPS permissions
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            // get gps location service
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            // set gps update location
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, location -> {});
+            // get location
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location != null) {
+                locate.latitude = (float)location.getLatitude();
+                locate.longitude = (float)location.getLongitude();
+            }
+        } else {
+            // handle with non gps permissions
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSIONS_REQUEST_LOCATION);
+        }
+
+        return locate;
+    }
+
+    private String getDeviceTimeStr() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + ":" + calendar.get(Calendar.SECOND)
+                + " " + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR);
     }
 
     @Override
@@ -88,4 +97,9 @@ public class EndGameActivity extends AppCompatActivity {
                 break;
         }
     }
+}
+
+class Locate {
+    public float longitude;
+    public float latitude;
 }

@@ -51,6 +51,7 @@ public class GameFieldModel {
 
     // level
     public static boolean mode = false;
+    public static enum eMode {ARROWS, SENSORS}
     public static int cycle_delay = CYCLE_DELAY_SLOW;
 
 }

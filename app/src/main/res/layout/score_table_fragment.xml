@@ -5,8 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ScoreTableFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <TableLayout
         android:id="@+id/topTableView"
         android:layout_width="match_parent"

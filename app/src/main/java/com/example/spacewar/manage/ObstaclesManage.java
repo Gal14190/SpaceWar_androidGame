@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.spacewar.activitys.EndGameActivity;
+import com.example.spacewar.activities.EndGameActivity;
 import com.example.spacewar.models.GameFieldModel;
 import com.example.spacewar.R;
 import com.example.spacewar.effects.*;

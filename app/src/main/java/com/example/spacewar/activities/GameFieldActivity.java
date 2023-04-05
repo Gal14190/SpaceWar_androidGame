@@ -1,4 +1,4 @@
-package com.example.spacewar.activitys;
+package com.example.spacewar.activities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,11 +47,9 @@ public class GameFieldActivity extends AppCompatActivity {
         else
             GameFieldModel.cycle_delay = GameFieldModel.CYCLE_DELAY_SLOW;
 
-        // set game mode (buttons or sensors
-        if(GameFieldModel.mode = getIntent().getBooleanExtra("mode", false)) {
-            leftBtn.setVisibility(View.INVISIBLE);
-            rightBtn.setVisibility(View.INVISIBLE);
-        }
+        // get game mode (buttons or sensors)
+        GameFieldModel.eMode mode = getIntent().getBooleanExtra("mode", false)? GameFieldModel.eMode.SENSORS
+                                                                                                :GameFieldModel.eMode.ARROWS;
 
         // Neon Animation rotation
         NeonAnimation neonAnimation = new NeonAnimation(neon);
@@ -60,7 +58,7 @@ public class GameFieldActivity extends AppCompatActivity {
         // init spaceship component and move buttons
         ComponentManage components = new ComponentManage(this, componentLayout, GameFieldModel.COMPONENT_SRC);
         components.setupComponents(); // setup components views
-        components.setupEvents(rightBtn, leftBtn);
+        components.setupEvents(rightBtn, leftBtn, mode);
 
         // init obstacles
         ObstaclesManage obstacles = new ObstaclesManage(this

@@ -9,11 +9,11 @@ import android.widget.LinearLayout;
 import com.example.spacewar.models.GameFieldModel;
 
 public class ComponentManage extends GameManage{
-    public enum Direction { RIGHT, LEFT };
-
     private Context context;
     private LinearLayout layout;
     private int drawableSrc;
+
+    private TiltManage tiltManage;
 
     private ComponentView[] componentView;
 
@@ -63,22 +63,65 @@ public class ComponentManage extends GameManage{
             componentView[i].state = false;
     }
 
-    public void setupEvents(View rightBtn, View leftBtn) {
-        // create onClick listener for the right button controller
-        rightBtn.setOnClickListener(view -> {
-            // check if the new component position is valid and update the view
-            int newPos = GameFieldModel.componentPosition + 1;
-            if(newPos < componentView.length) {
-                GameFieldModel.componentPosition = newPos;
+    public void setupEvents(View rightBtn, View leftBtn, GameFieldModel.eMode mode) {
+        switch (mode){
+            case SENSORS:
+                // hide buttons
+                rightBtn.setVisibility(View.INVISIBLE);
+                leftBtn.setVisibility(View.INVISIBLE);
 
-                resetState();
-                componentView[GameFieldModel.componentPosition].state = true;
-                review();
-            }
-        });
+                // create sensor event listener
+                tiltManage = new TiltManage(context);
+                tiltManage.setCallbackComponent(new CallbackComponent() {
+                    @Override
+                    public void moveRight() {
+                        ComponentManage.this.moveRight();
+                    }
 
-        // create onClick listener for the left button controller
-        leftBtn.setOnClickListener(view -> {
+                    @Override
+                    public void moveLeft() {
+                        ComponentManage.this.moveLeft();
+                    }
+
+                    @Override
+                    public void speedFaster() {
+                        ComponentManage.this.speedFaster();
+                    }
+
+                    @Override
+                    public void speedSlower() {
+                        ComponentManage.this.speedSlower();
+                    }
+                });
+                break;
+            case ARROWS:
+                // show buttons
+                rightBtn.setVisibility(View.VISIBLE);
+                leftBtn.setVisibility(View.VISIBLE);
+
+                // create onClick listener for the right button controller
+                rightBtn.setOnClickListener(view -> moveRight());
+
+                // create onClick listener for the left button controller
+                leftBtn.setOnClickListener(view -> moveLeft());
+
+                break;
+        }
+    }
+
+    private void moveRight() {
+        // check if the new component position is valid and update the view
+        int newPos = GameFieldModel.componentPosition + 1;
+        if(newPos < componentView.length) {
+            GameFieldModel.componentPosition = newPos;
+
+            resetState();
+            componentView[GameFieldModel.componentPosition].state = true;
+            review();
+        }
+    }
+
+    private void moveLeft() {
             // check if the new component position is valid and update the view
             int newPos = GameFieldModel.componentPosition - 1;
             if(newPos >= 0) {
@@ -88,7 +131,15 @@ public class ComponentManage extends GameManage{
                 componentView[GameFieldModel.componentPosition].state = true;
                 review();
             }
-        });
+    }
+
+    private void speedFaster() {
+        if(GameFieldModel.cycle_delay - 50 > 50)
+            GameFieldModel.cycle_delay -= 50;
+    }
+    private void speedSlower() {
+        if(GameFieldModel.cycle_delay + 50 < 1000)
+            GameFieldModel.cycle_delay += 50;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.example.spacewar.activitys;
+package com.example.spacewar.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.spacewar.fragments.MapFragment;
 import com.example.spacewar.R;
 import com.example.spacewar.fragments.ScoreTableFragment;
-import com.example.spacewar.manage.CallbackPosition;
 
 public class TopActivity extends AppCompatActivity {
     private ScoreTableFragment scoreTableFragment;
@@ -21,18 +20,17 @@ public class TopActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.top_activity);
 
-        // back to main page button click event
+        // set back to main page button click event
         ((ImageButton) findViewById(R.id.backBtn)).setOnClickListener(view -> {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         });
 
-        scoreTableFragment = new ScoreTableFragment();
+        // setup fragments
         mapFragment = new MapFragment();
-
-        CallbackPosition callbackPosition = (v1, v2) -> mapFragment.zoom(v1, v2);
-        scoreTableFragment.setCallbackPosition(callbackPosition);
+        scoreTableFragment = new ScoreTableFragment();
+        scoreTableFragment.setCallbackPosition((v1, v2) -> mapFragment.zoom(v1, v2)); // use callback for pass location form score to map fragment
 
         getSupportFragmentManager()
                 .beginTransaction()

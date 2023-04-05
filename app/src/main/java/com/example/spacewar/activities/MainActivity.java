@@ -1,4 +1,4 @@
-package com.example.spacewar.activitys;
+package com.example.spacewar.activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -36,6 +36,34 @@ public class MainActivity extends AppCompatActivity {
 
         initViews(); // add views
 
+        setEventListener(); // set click events
+
+    }
+
+    private void initViews() {
+        levelButtons = new Button[2];
+        // slow level button view (0)
+        levelButtons[0] = (Button) findViewById(R.id.slowLevelBtn);
+        levelButtons[0].setBackgroundColor(STYLE_COLOR_SELECT);
+        // fast level button view (1)
+        levelButtons[1] = (Button) findViewById(R.id.fastLevelBtn);
+        levelButtons[1].setBackgroundColor(STYLE_COLOR_NOT_SELECT);
+
+        modeButtons = new Button[2];
+        // arrows button mode view (0)
+        modeButtons[0] = (Button) findViewById(R.id.arrowModeBtn);
+        modeButtons[0].setBackgroundColor(STYLE_COLOR_SELECT);
+        // sensor mode view (1)
+        modeButtons[1] = (Button) findViewById(R.id.sensorModeBtn);
+        modeButtons[1].setBackgroundColor(STYLE_COLOR_NOT_SELECT);
+
+        // start game button view
+        startGameButton = (Button) findViewById(R.id.startGameBtn);
+        // score table button view
+        scoreTableButton = (Button) findViewById(R.id.scoreTableBtn);
+    }
+
+    private void setEventListener() {
         // level slow click event
         levelButtons[0].setOnClickListener(view -> {
             levelButtons[0].setBackgroundColor(STYLE_COLOR_SELECT);
@@ -79,29 +107,5 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
-
-    }
-
-    private void initViews() {
-        levelButtons = new Button[2];
-        // slow level button view (0)
-        levelButtons[0] = (Button) findViewById(R.id.slowLevelBtn);
-        levelButtons[0].setBackgroundColor(STYLE_COLOR_SELECT);
-        // fast level button view (1)
-        levelButtons[1] = (Button) findViewById(R.id.fastLevelBtn);
-        levelButtons[1].setBackgroundColor(STYLE_COLOR_NOT_SELECT);
-
-        modeButtons = new Button[2];
-        // arrows button mode view (0)
-        modeButtons[0] = (Button) findViewById(R.id.arrowModeBtn);
-        modeButtons[0].setBackgroundColor(STYLE_COLOR_SELECT);
-        // sensor mode view (1)
-        modeButtons[1] = (Button) findViewById(R.id.sensorModeBtn);
-        modeButtons[1].setBackgroundColor(STYLE_COLOR_NOT_SELECT);
-
-        // start game button view
-        startGameButton = (Button) findViewById(R.id.startGameBtn);
-        // score table button view
-        scoreTableButton = (Button) findViewById(R.id.scoreTableBtn);
     }
 }
