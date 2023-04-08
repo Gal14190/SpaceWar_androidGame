@@ -1,15 +1,20 @@
 package com.example.spacewar.fragments;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.appcompat.view.menu.MenuView;
 import androidx.fragment.app.Fragment;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -23,7 +28,6 @@ import java.util.ArrayList;
 
 public class ScoreTableFragment extends Fragment {
     private CallbackPosition callbackPosition;
-    private ArrayList<TopGameView> topGameView;
 
     public ScoreTableFragment() {}
 
@@ -41,77 +45,55 @@ public class ScoreTableFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.score_table_fragment, container, false);
 
-        // set rows of data
-        TableLayout scoreTableView = view.findViewById(R.id.topTableView);
-        DataManage dataManage = new DataManage(getActivity().getBaseContext());
-        ArrayList<TopGame> topGames = dataManage.getTopGame();
+        ListView listView = (ListView) view.findViewById(R.id.socre_list);
+        listView.setAdapter(null);
 
-        topGameView = new ArrayList<>();
-        int i = 0;
-        for(TopGame topGame : topGames) {
-            TableRow row = setTableRow(view); // new row
-            setContext(topGame, row, i++);    // set data
-            scoreTableView.addView(row);    //add row to table
-        }
+        // get data to display
+        DataManage dataManage = new DataManage(getActivity().getBaseContext());
+        ArrayList<TopGame> data = dataManage.getTopGame();
+
+        // set data adapter for list view
+        ItemsAdapter adapter = new ItemsAdapter(view.getContext(), callbackPosition, data);
+        listView.setAdapter(adapter);
 
         return view;
     }
-
-    private TopGame findById(int id) {
-        for(TopGameView t : topGameView) {
-            if(t.id == id)
-                return t.topGame;
-        }
-
-        return null;
-    }
-
-    private TableRow setTableRow(View view) {
-        TableRow row = new TableRow(getContext()); // set new row
-
-        // display icon fireball first
-        ImageView imageView = new ImageView(getContext());
-        imageView.setImageResource(R.drawable.fireball);
-        imageView.setLayoutParams(view.findViewById(R.id.exampleImage).getLayoutParams());
-        row.addView(imageView);
-
-        return row;
-    }
-
-    private void setContext(TopGame topGame, TableRow dest, int i) {
-        // display score
-        TextView scoreView = new TextView(getContext());
-        scoreView.setText(Integer.toString(topGame.getScore()));
-        scoreView.setTransitionName(Integer.toString(i));
-        scoreView.setTextColor(Color.BLACK);
-        scoreView.setTextSize(20);
-        scoreView.setGravity(Gravity.CENTER);
-
-        // click event on score to mark the location when the game locate over the google map
-        topGameView.add(new TopGameView(topGame, i));
-        scoreView.setOnClickListener(v ->{
-            int id = (int)Integer.parseInt(v.getTransitionName());
-            TopGame _topGame = findById(id);
-            callbackPosition.position(_topGame.getLat(), _topGame.getLon());
-        });
-
-        dest.addView(scoreView);
-
-        // display date and time
-        TextView timeView = new TextView(getContext());
-        timeView.setText(topGame.getTime());
-        timeView.setTextSize(14);
-        dest.addView(timeView);
-    }
-
 }
 
-class TopGameView {
-    public TopGame topGame;
-    public int id;
+class ItemsAdapter extends ArrayAdapter<TopGame> {
+    Context context;
+    ArrayList<TopGame> data;
+    CallbackPosition callbackPosition;
 
-    public TopGameView(TopGame topGame, int id) {
-        this.topGame = topGame;
-        this.id = id;
+    public ItemsAdapter(Context context, CallbackPosition callbackPosition, ArrayList<TopGame> data) {
+        super(context, R.layout.score_item, data);
+        this.context = context;
+        this.data = data;
+        this.callbackPosition = callbackPosition;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View view = convertView;
+        if (view == null) {
+            LayoutInflater inflater = LayoutInflater.from(getContext());
+            view = inflater.inflate(R.layout.score_item, null);
+        }
+
+        // get the current data
+        TopGame contact = data.get(position);
+
+        // view score and dataTime of a game
+        ((TextView) view.findViewById(R.id.point)).setText(Integer.toString(contact.getScore()));
+        ((TextView) view.findViewById(R.id.datetime)).setText(contact.getTime());
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // set mark position
+                callbackPosition.position(contact.getLat(), contact.getLon());
+            }
+        });
+        return view;
     }
 }
