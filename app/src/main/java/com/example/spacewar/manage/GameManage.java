@@ -1,7 +1,11 @@
 package com.example.spacewar.manage;
 
 import android.content.Context;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.DisplayMetrics;
+import android.widget.Toast;
 
 import com.example.spacewar.models.GameFieldModel;
 
@@ -9,6 +13,7 @@ import java.util.Random;
 
 public abstract class GameManage extends Thread {
     private Context context;
+    private Vibrator vibrator;
 
     public GameManage(Context _context) {
         this.context = _context;
@@ -42,6 +47,26 @@ public abstract class GameManage extends Thread {
             sleep(GameFieldModel.cycle_delay);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Message popup
+     */
+    public void messagePopup(String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show(); // toast massage
+    }
+
+    /**
+     * Device vibrator
+     */
+    public void vibrator() {
+        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            //deprecated in API 26
+            vibrator.vibrate(500);
         }
     }
 

@@ -22,7 +22,6 @@ import com.example.spacewar.effects.*;
 public class ObstaclesManage extends GameManage {
     private boolean flag_play;
     private int counter;
-    private Vibrator vibrator;
     private SoundEffect soundEffect;
 
     private Context context;
@@ -165,21 +164,15 @@ public class ObstaclesManage extends GameManage {
         // decrease live counter and invisible heart icon
         if(obstaclesViews[GameFieldModel.componentPosition][GameFieldModel.ROW_SIZE-1].state) {
             if(obstaclesViews[GameFieldModel.componentPosition][GameFieldModel.ROW_SIZE-1].coin) { // coin hit
-                Toast.makeText(context, "+" + GameFieldModel.COIN_BONUS, Toast.LENGTH_SHORT).show(); // toast massage
+                messagePopup("+" + GameFieldModel.COIN_BONUS);
                 counter += GameFieldModel.COIN_BONUS;
             } else { // obstacle hit
                 hearsView[--GameFieldModel.lives].setVisibility(View.INVISIBLE);
 
-                Toast.makeText(context, "Hit!", Toast.LENGTH_SHORT).show(); // toast massage
+                messagePopup("Hit!");
 
                 // vibrate 500ms
-                vibrator = (Vibrator) activity.getSystemService(Context.VIBRATOR_SERVICE);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    vibrator.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
-                } else {
-                    //deprecated in API 26
-                    vibrator.vibrate(500);
-                }
+                vibrator();
 
                 soundEffect.play(); // make sound crash
 
