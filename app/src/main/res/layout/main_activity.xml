@@ -25,7 +25,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="By Gal Ashkenazi" />
+        android:text="@string/myname_title" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             android:layout_weight="1"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:text="LEVEL" />
+            android:text="@string/level_title" />
 
         <Button
             android:id="@+id/slowLevelBtn"
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="8dp"
-            android:text="Slow" />
+            android:text="@string/slow_button" />
 
         <Button
             android:id="@+id/fastLevelBtn"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="8dp"
-            android:text="fast" />
+            android:text="@string/fast_button" />
     </LinearLayout>
 
     <LinearLayout
@@ -70,7 +70,7 @@
             android:layout_weight="1"
             android:textColor="@color/white"
             android:textSize="20sp"
-            android:text="MODE" />
+            android:text="@string/move_title" />
 
         <Button
             android:id="@+id/arrowModeBtn"
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="8dp"
-            android:text="BUTTON" />
+            android:text="@string/button_button" />
 
         <Button
             android:id="@+id/sensorModeBtn"
@@ -86,7 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="8dp"
-            android:text="SENSOR" />
+            android:text="@string/sensor_button" />
     </LinearLayout>
 
     <Button
@@ -96,7 +96,7 @@
         android:layout_marginTop="100dp"
         android:layout_marginRight="100dp"
         android:layout_marginLeft="100dp"
-        android:text="START" />
+        android:text="@string/start_button" />
 
     <Button
         android:id="@+id/scoreTableBtn"
@@ -105,5 +105,5 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="80dp"
         android:layout_marginLeft="80dp"
-        android:text="SCORE TABLE" />
+        android:text="@string/scoretable_button" />
 </LinearLayout>

@@ -6,4 +6,18 @@
     <string name="play_again_button">GO TO MAIN</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="score_title">Score: </string>
+    <string name="end_activity_title">FINISH</string>
+
+    <string name="myname_title">By Gal Ashkenazi</string>
+    <string name="level_title">LEVEL</string>
+    <string name="move_title">MODE</string>
+    <string name="slow_button">Slow</string>
+    <string name="fast_button">Fast</string>
+    <string name="button_button">BUTTON</string>
+    <string name="sensor_button">SENSOR</string>
+    <string name="start_button">START</string>
+    <string name="scoretable_button">SCORE TABLE</string>
+
+    <string name="empty">N/A</string>
 </resources>

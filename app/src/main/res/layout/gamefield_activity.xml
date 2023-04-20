@@ -75,7 +75,7 @@
                     android:textDirection="rtl"
                     android:layout_marginRight="10dp"
                     android:shadowColor="@color/black"
-                    android:text="N/A" />
+                    android:text="@string/empty" />
 
             </LinearLayout>
 
